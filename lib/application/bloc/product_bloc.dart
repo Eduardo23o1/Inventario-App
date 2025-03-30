@@ -21,9 +21,12 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   ) async {
     emit(ProductLoading());
     try {
-      final products = await _localStorage.getProductsByInventory(
-        event.inventoryId,
-      );
+      final products =
+          event.inventoryId.isEmpty
+              ? await _localStorage
+                  .loadProducts() // Cargar todos los productos
+              : await _localStorage.getProductsByInventory(event.inventoryId);
+
       emit(ProductLoaded(products));
     } catch (e) {
       emit(ProductError('Error al cargar los productos'));
@@ -37,11 +40,9 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     final currentProducts = await _localStorage.loadProducts();
     currentProducts.add(event.product);
     await _localStorage.saveProducts(currentProducts);
-    emit(
-      ProductLoaded(
-        await _localStorage.getProductsByInventory(event.product.inventoryId),
-      ),
-    );
+
+    // Emitir el estado actualizado con todos los productos
+    emit(ProductLoaded(await _localStorage.loadProducts()));
   }
 
   Future<void> _onUpdateProduct(
@@ -57,11 +58,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
             )
             .toList();
     await _localStorage.saveProducts(updatedProducts);
-    emit(
-      ProductLoaded(
-        await _localStorage.getProductsByInventory(event.product.inventoryId),
-      ),
-    );
+
+    emit(ProductLoaded(await _localStorage.loadProducts()));
   }
 
   Future<void> _onDeleteProduct(
@@ -74,6 +72,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
             .where((product) => product.id != event.productId)
             .toList();
     await _localStorage.saveProducts(updatedProducts);
-    emit(ProductLoaded(updatedProducts));
+
+    emit(ProductLoaded(await _localStorage.loadProducts()));
   }
 }

@@ -6,7 +6,10 @@ import 'package:inventario_app/application/bloc/inventory_event.dart';
 import 'package:inventario_app/application/bloc/inventory_state.dart';
 import 'package:inventario_app/application/bloc/product_bloc.dart';
 import 'package:inventario_app/application/bloc/product_event.dart';
+import 'package:inventario_app/application/bloc/product_state.dart';
 import 'package:inventario_app/data/repositories/local_storage.dart';
+import 'package:inventario_app/presentation/Widget/appbar.dart';
+import 'package:inventario_app/presentation/Widget/build_styled_card_inventory.dart';
 import 'package:inventario_app/presentation/screens/inventory_form_screen.dart';
 import 'package:inventario_app/presentation/screens/product_list_screen.dart';
 
@@ -18,6 +21,7 @@ class InventoryListScreen extends StatelessWidget {
       'selected_inventory_id',
       inventoryId,
     );
+    // ignore: use_build_context_synchronously
     context.read<ProductBloc>().add(LoadProducts(inventoryId));
   }
 
@@ -57,14 +61,7 @@ class InventoryListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Inventarios',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-        elevation: 2,
-      ),
+      appBar: buildStyledAppBar("Inventarios"),
       body: BlocBuilder<InventoryBloc, InventoryState>(
         builder: (context, state) {
           if (state is InventoryLoading) {
@@ -84,63 +81,39 @@ class InventoryListScreen extends StatelessWidget {
               separatorBuilder: (_, __) => const SizedBox(height: 10),
               itemBuilder: (context, index) {
                 final inventory = state.inventories[index];
-                return Card(
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
-                    ),
-                    title: Text(
-                      inventory.name,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                return buildStyledCardWithActions(
+                  context,
+                  inventory.name,
+                  context.watch<ProductBloc>().state is ProductLoaded
+                      ? (context.watch<ProductBloc>().state as ProductLoaded)
+                          .products
+                          .where(
+                            (product) => product.inventoryId == inventory.id,
+                          )
+                          .length
+                      : 0,
+                  () {
+                    onInventorySelected(inventory.id, context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (_) => ProductListScreen(inventoryId: inventory.id),
                       ),
-                    ),
-                    /*subtitle: Text(
-                      'Descripción: ${inventory.}',
-                      style: TextStyle(color: Colors.grey[600]),
-                    ),*/
-                    trailing: Wrap(
-                      spacing: 8,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.edit, color: Colors.blue),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder:
-                                    (_) => InventoryFormScreen(
-                                      inventory: inventory,
-                                    ),
-                              ),
-                            );
-                          },
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.delete, color: Colors.red),
-                          onPressed:
-                              () => _confirmDelete(context, inventory.id),
-                        ),
-                      ],
-                    ),
-                    onTap: () {
-                      onInventorySelected(inventory.id, context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder:
-                              (_) =>
-                                  ProductListScreen(inventoryId: inventory.id),
-                        ),
-                      );
-                    },
-                  ),
+                    );
+                  },
+                  () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (_) => InventoryFormScreen(inventory: inventory),
+                      ),
+                    );
+                  },
+                  () {
+                    _confirmDelete(context, inventory.id);
+                  },
                 );
               },
             );
