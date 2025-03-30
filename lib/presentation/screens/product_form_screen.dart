@@ -44,66 +44,56 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
         child: Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Nombre del Producto',
-                ),
-                validator:
-                    (value) =>
-                        value!.isEmpty ? 'El nombre es obligatorio' : null,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _priceController,
-                decoration: const InputDecoration(labelText: 'Precio'),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value!.isEmpty) return 'El precio es obligatorio';
-                  final price = double.tryParse(value);
-                  if (price == null || price < 0) return 'Precio inválido';
+              _buildTextField(
+                _nameController,
+                'Nombre del Producto',
+                Icons.inventory,
+                (value) {
+                  if (value!.isEmpty) return 'El nombre es obligatorio';
                   return null;
                 },
               ),
               const SizedBox(height: 16),
-              TextFormField(
-                controller: _quantityController,
-                decoration: const InputDecoration(labelText: 'Cantidad'),
-                keyboardType: TextInputType.number,
-                validator: (value) {
+              _buildTextField(_priceController, 'Precio', Icons.attach_money, (
+                value,
+              ) {
+                if (value!.isEmpty) return 'El precio es obligatorio';
+                final price = double.tryParse(value);
+                if (price == null || price < 0) return 'Precio inválido';
+                return null;
+              }, TextInputType.number),
+              const SizedBox(height: 16),
+              _buildTextField(
+                _quantityController,
+                'Cantidad',
+                Icons.format_list_numbered,
+                (value) {
                   if (value!.isEmpty) return 'La cantidad es obligatoria';
                   final quantity = int.tryParse(value);
                   if (quantity == null || quantity < 0)
                     return 'Cantidad inválida';
                   return null;
                 },
+                TextInputType.number,
               ),
               const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    final product = Product(
-                      id: widget.product?.id ?? const Uuid().v4(),
-                      name: _nameController.text,
-                      price: double.parse(_priceController.text),
-                      quantity: int.parse(_quantityController.text),
-                      inventoryId: widget.inventoryId,
-                    );
-
-                    if (widget.product == null) {
-                      context.read<ProductBloc>().add(
-                        AddProduct(product, _nameController.text),
-                      );
-                    } else {
-                      context.read<ProductBloc>().add(UpdateProduct(product));
-                    }
-
-                    Navigator.pop(context);
-                  }
-                },
-                child: Text(
-                  widget.product == null ? 'Agregar' : 'Guardar cambios',
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: _submitForm,
+                  icon: const Icon(Icons.save),
+                  label: Text(
+                    widget.product == null ? 'Agregar' : 'Guardar cambios',
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    textStyle: const TextStyle(fontSize: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -111,5 +101,46 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
         ),
       ),
     );
+  }
+
+  Widget _buildTextField(
+    TextEditingController controller,
+    String label,
+    IconData icon,
+    String? Function(String?) validator, [
+    TextInputType keyboardType = TextInputType.text,
+  ]) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(icon),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+      ),
+      keyboardType: keyboardType,
+      validator: validator,
+    );
+  }
+
+  void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      final product = Product(
+        id: widget.product?.id ?? const Uuid().v4(),
+        name: _nameController.text,
+        price: double.parse(_priceController.text),
+        quantity: int.parse(_quantityController.text),
+        inventoryId: widget.inventoryId,
+      );
+
+      if (widget.product == null) {
+        context.read<ProductBloc>().add(
+          AddProduct(product, _nameController.text),
+        );
+      } else {
+        context.read<ProductBloc>().add(UpdateProduct(product));
+      }
+
+      Navigator.pop(context);
+    }
   }
 }

@@ -9,6 +9,7 @@ import 'package:inventario_app/data/repositories/local_storage.dart';
 import 'package:inventario_app/infrastructure/repositories/inventory_repository.dart';
 import 'package:inventario_app/infrastructure/repositories/product_repository.dart';
 import 'package:inventario_app/presentation/screens/inventory_list_screen.dart';
+import 'package:inventario_app/presentation/screens/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,7 +54,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Gestión de Inventarios',
         theme: ThemeData(primarySwatch: Colors.blue),
-        home: const InventoryListScreen(),
+        home: const SplashScreen(),
       ),
     );
   }

@@ -18,75 +18,152 @@ class InventoryListScreen extends StatelessWidget {
       'selected_inventory_id',
       inventoryId,
     );
-
-    // Disparar evento para recargar productos
     context.read<ProductBloc>().add(LoadProducts(inventoryId));
+  }
+
+  void _confirmDelete(BuildContext context, String inventoryId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text('Confirmar eliminación'),
+          content: const Text(
+            '¿Estás seguro de que deseas eliminar este inventario?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext),
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(dialogContext);
+                context.read<InventoryBloc>().add(DeleteInventory(inventoryId));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Inventario eliminado')),
+                );
+              },
+              child: const Text(
+                'Eliminar',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Inventarios')),
+      appBar: AppBar(
+        title: const Text(
+          'Inventarios',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+        elevation: 2,
+      ),
       body: BlocBuilder<InventoryBloc, InventoryState>(
         builder: (context, state) {
           if (state is InventoryLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is InventoryLoaded) {
-            return ListView.builder(
+            if (state.inventories.isEmpty) {
+              return const Center(
+                child: Text(
+                  'No hay inventarios disponibles',
+                  style: TextStyle(fontSize: 16),
+                ),
+              );
+            }
+            return ListView.separated(
+              padding: const EdgeInsets.all(16.0),
               itemCount: state.inventories.length,
+              separatorBuilder: (_, __) => const SizedBox(height: 10),
               itemBuilder: (context, index) {
                 final inventory = state.inventories[index];
-                return ListTile(
-                  title: Text('${inventory.name} (${inventory.id})'),
-                  subtitle: Text('Descripción:'),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.edit),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder:
-                                  (_) =>
-                                      InventoryFormScreen(inventory: inventory),
-                            ),
-                          );
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.delete, color: Colors.red),
-                        onPressed: () {
-                          context.read<InventoryBloc>().add(
-                            DeleteInventory(inventory.id),
-                          );
-                        },
-                      ),
-                    ],
+                return Card(
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  onTap: () {
-                    onInventorySelected(inventory.id, context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder:
-                            (context) =>
-                                ProductListScreen(inventoryId: inventory.id),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    title: Text(
+                      inventory.name,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
                       ),
-                    );
-                  },
+                    ),
+                    /*subtitle: Text(
+                      'Descripción: ${inventory.}',
+                      style: TextStyle(color: Colors.grey[600]),
+                    ),*/
+                    trailing: Wrap(
+                      spacing: 8,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.edit, color: Colors.blue),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (_) => InventoryFormScreen(
+                                      inventory: inventory,
+                                    ),
+                              ),
+                            );
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.delete, color: Colors.red),
+                          onPressed:
+                              () => _confirmDelete(context, inventory.id),
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      onInventorySelected(inventory.id, context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (_) =>
+                                  ProductListScreen(inventoryId: inventory.id),
+                        ),
+                      );
+                    },
+                  ),
                 );
               },
             );
           } else if (state is InventoryError) {
-            return Center(child: Text(state.message));
+            return Center(
+              child: Text(
+                state.message,
+                style: const TextStyle(color: Colors.red),
+              ),
+            );
           }
-          return const Center(child: Text('No hay inventarios disponibles'));
+          return const Center(
+            child: Text(
+              'No hay inventarios disponibles',
+              style: TextStyle(fontSize: 16),
+            ),
+          );
         },
       ),
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+        backgroundColor: Colors.blue,
+        child: const Icon(Icons.add, color: Colors.white),
         onPressed: () {
           Navigator.push(
             context,
