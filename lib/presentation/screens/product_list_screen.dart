@@ -94,9 +94,10 @@ class ProductListScreen extends StatelessWidget {
                       ),
                     ),
                     subtitle: Text(
-                      'Precio: \$${product.price.toStringAsFixed(2)}',
+                      'Precio: \$${product.price.toStringAsFixed(0)}  |  Cantidad: ${product.quantity}',
                       style: TextStyle(color: Colors.grey[600]),
                     ),
+
                     trailing: Wrap(
                       spacing: 8,
                       children: [
