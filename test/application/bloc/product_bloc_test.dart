@@ -10,7 +10,8 @@ import 'package:inventario_app/application/bloc/product_state.dart';
 import 'package:inventario_app/data/repositories/local_storage.dart';
 import 'package:inventario_app/infrastructure/repositories/product_repository.dart';
 
-import '../../mocks.mocks.dart';
+// Removed unused import to avoid conflict
+import 'product_bloc_test.mocks.dart';
 
 @GenerateMocks([LocalStorage, ProductRepository])
 void main() {
@@ -18,7 +19,7 @@ void main() {
   late MockProductRepository mockProductRepository;
   late ProductBloc productBloc;
 
-  final sl = GetIt.instance; // Instancia de GetIt
+  final sl = GetIt.instance;
 
   setUp(() {
     mockLocalStorage = MockLocalStorage();
@@ -36,12 +37,12 @@ void main() {
     productBloc.close();
   });
 
-  test('initial state is ProductInitial', () {
+  test('El estado inicial es ProductInitial', () {
     expect(productBloc.state, ProductInitial());
   });
 
   blocTest<ProductBloc, ProductState>(
-    'emits [ProductLoading, ProductLoaded] when LoadProducts is added and succeeds',
+    'emite [ProductLoading, ProductLoaded] cuando se agrega LoadProducts y tiene éxito',
     build: () {
       when(mockLocalStorage.loadProducts()).thenAnswer(
         (_) async => [
@@ -76,24 +77,20 @@ void main() {
   );
 
   blocTest<ProductBloc, ProductState>(
-    'emits [ProductLoading, ProductError] when LoadProducts fails',
+    'emite [ProductLoading, ProductError] cuando LoadProducts falla',
     build: () {
       when(mockLocalStorage.loadProducts()).thenThrow(Exception('Error'));
       return productBloc;
     },
     act: (bloc) => bloc.add(LoadProducts('')),
-    expect:
-        () => [
-          ProductLoading(),
-          isA<ProductError>(), // Verifica solo que el estado es ProductError
-        ],
+    expect: () => [ProductLoading(), isA<ProductError>()],
     verify: (_) {
       verify(mockLocalStorage.loadProducts()).called(1);
     },
   );
 
   blocTest<ProductBloc, ProductState>(
-    'emits [ProductLoaded([])] when DeleteProduct is added',
+    'emite [ProductLoaded([])] cuando se agrega DeleteProduct',
     build: () {
       final List<Product> mockProductList = [
         Product(

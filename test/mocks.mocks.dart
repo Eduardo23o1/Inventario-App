@@ -3,15 +3,13 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i3;
+import 'dart:async' as _i4;
 
 import 'package:inventario_app/data/repositories/local_storage.dart' as _i2;
-import 'package:inventario_app/domain/models/inventory.dart' as _i4;
-import 'package:inventario_app/domain/models/product.dart' as _i5;
+import 'package:inventario_app/domain/models/inventory.dart' as _i5;
+import 'package:inventario_app/domain/models/product.dart' as _i6;
 import 'package:inventario_app/infrastructure/repositories/inventory_repository.dart'
-    as _i6;
-import 'package:inventario_app/infrastructure/repositories/product_repository.dart'
-    as _i7;
+    as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -33,81 +31,11 @@ class _FakeLocalStorage_0 extends _i1.SmartFake implements _i2.LocalStorage {
     : super(parent, parentInvocation);
 }
 
-/// A class which mocks [LocalStorage].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockLocalStorage extends _i1.Mock implements _i2.LocalStorage {
-  MockLocalStorage() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  _i3.Future<void> setString(String? key, String? value) =>
-      (super.noSuchMethod(
-            Invocation.method(#setString, [key, value]),
-            returnValue: _i3.Future<void>.value(),
-            returnValueForMissingStub: _i3.Future<void>.value(),
-          )
-          as _i3.Future<void>);
-
-  @override
-  _i3.Future<String?> getString(String? key) =>
-      (super.noSuchMethod(
-            Invocation.method(#getString, [key]),
-            returnValue: _i3.Future<String?>.value(),
-          )
-          as _i3.Future<String?>);
-
-  @override
-  _i3.Future<void> saveInventories(List<_i4.Inventory>? inventories) =>
-      (super.noSuchMethod(
-            Invocation.method(#saveInventories, [inventories]),
-            returnValue: _i3.Future<void>.value(),
-            returnValueForMissingStub: _i3.Future<void>.value(),
-          )
-          as _i3.Future<void>);
-
-  @override
-  _i3.Future<List<_i4.Inventory>> loadInventories() =>
-      (super.noSuchMethod(
-            Invocation.method(#loadInventories, []),
-            returnValue: _i3.Future<List<_i4.Inventory>>.value(
-              <_i4.Inventory>[],
-            ),
-          )
-          as _i3.Future<List<_i4.Inventory>>);
-
-  @override
-  _i3.Future<void> saveProducts(List<_i5.Product>? products) =>
-      (super.noSuchMethod(
-            Invocation.method(#saveProducts, [products]),
-            returnValue: _i3.Future<void>.value(),
-            returnValueForMissingStub: _i3.Future<void>.value(),
-          )
-          as _i3.Future<void>);
-
-  @override
-  _i3.Future<List<_i5.Product>> loadProducts() =>
-      (super.noSuchMethod(
-            Invocation.method(#loadProducts, []),
-            returnValue: _i3.Future<List<_i5.Product>>.value(<_i5.Product>[]),
-          )
-          as _i3.Future<List<_i5.Product>>);
-
-  @override
-  _i3.Future<List<_i5.Product>> getProductsByInventory(String? inventoryId) =>
-      (super.noSuchMethod(
-            Invocation.method(#getProductsByInventory, [inventoryId]),
-            returnValue: _i3.Future<List<_i5.Product>>.value(<_i5.Product>[]),
-          )
-          as _i3.Future<List<_i5.Product>>);
-}
-
 /// A class which mocks [InventoryRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockInventoryRepository extends _i1.Mock
-    implements _i6.InventoryRepository {
+    implements _i3.InventoryRepository {
   MockInventoryRepository() {
     _i1.throwOnMissingStub(this);
   }
@@ -124,67 +52,91 @@ class MockInventoryRepository extends _i1.Mock
           as _i2.LocalStorage);
 
   @override
-  _i3.Future<List<_i4.Inventory>> loadInventories() =>
+  _i4.Future<List<_i5.Inventory>> loadInventories() =>
       (super.noSuchMethod(
             Invocation.method(#loadInventories, []),
-            returnValue: _i3.Future<List<_i4.Inventory>>.value(
-              <_i4.Inventory>[],
+            returnValue: _i4.Future<List<_i5.Inventory>>.value(
+              <_i5.Inventory>[],
             ),
           )
-          as _i3.Future<List<_i4.Inventory>>);
+          as _i4.Future<List<_i5.Inventory>>);
 
   @override
-  _i3.Future<void> saveInventories(List<_i4.Inventory>? inventories) =>
+  _i4.Future<void> saveInventories(List<_i5.Inventory>? inventories) =>
       (super.noSuchMethod(
             Invocation.method(#saveInventories, [inventories]),
-            returnValue: _i3.Future<void>.value(),
-            returnValueForMissingStub: _i3.Future<void>.value(),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
           )
-          as _i3.Future<void>);
+          as _i4.Future<void>);
 }
 
-/// A class which mocks [ProductRepository].
+/// A class which mocks [LocalStorage].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockProductRepository extends _i1.Mock implements _i7.ProductRepository {
-  MockProductRepository() {
+class MockLocalStorage extends _i1.Mock implements _i2.LocalStorage {
+  MockLocalStorage() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i2.LocalStorage get localStorage =>
+  _i4.Future<void> setString(String? key, String? value) =>
       (super.noSuchMethod(
-            Invocation.getter(#localStorage),
-            returnValue: _FakeLocalStorage_0(
-              this,
-              Invocation.getter(#localStorage),
+            Invocation.method(#setString, [key, value]),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
+
+  @override
+  _i4.Future<String?> getString(String? key) =>
+      (super.noSuchMethod(
+            Invocation.method(#getString, [key]),
+            returnValue: _i4.Future<String?>.value(),
+          )
+          as _i4.Future<String?>);
+
+  @override
+  _i4.Future<void> saveInventories(List<_i5.Inventory>? inventories) =>
+      (super.noSuchMethod(
+            Invocation.method(#saveInventories, [inventories]),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
+
+  @override
+  _i4.Future<List<_i5.Inventory>> loadInventories() =>
+      (super.noSuchMethod(
+            Invocation.method(#loadInventories, []),
+            returnValue: _i4.Future<List<_i5.Inventory>>.value(
+              <_i5.Inventory>[],
             ),
           )
-          as _i2.LocalStorage);
+          as _i4.Future<List<_i5.Inventory>>);
 
   @override
-  _i3.Future<void> addProduct(_i5.Product? product) =>
-      (super.noSuchMethod(
-            Invocation.method(#addProduct, [product]),
-            returnValue: _i3.Future<void>.value(),
-            returnValueForMissingStub: _i3.Future<void>.value(),
-          )
-          as _i3.Future<void>);
-
-  @override
-  _i3.Future<List<_i5.Product>> loadProducts() =>
-      (super.noSuchMethod(
-            Invocation.method(#loadProducts, []),
-            returnValue: _i3.Future<List<_i5.Product>>.value(<_i5.Product>[]),
-          )
-          as _i3.Future<List<_i5.Product>>);
-
-  @override
-  _i3.Future<void> saveProducts(List<_i5.Product>? products) =>
+  _i4.Future<void> saveProducts(List<_i6.Product>? products) =>
       (super.noSuchMethod(
             Invocation.method(#saveProducts, [products]),
-            returnValue: _i3.Future<void>.value(),
-            returnValueForMissingStub: _i3.Future<void>.value(),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
           )
-          as _i3.Future<void>);
+          as _i4.Future<void>);
+
+  @override
+  _i4.Future<List<_i6.Product>> loadProducts() =>
+      (super.noSuchMethod(
+            Invocation.method(#loadProducts, []),
+            returnValue: _i4.Future<List<_i6.Product>>.value(<_i6.Product>[]),
+          )
+          as _i4.Future<List<_i6.Product>>);
+
+  @override
+  _i4.Future<List<_i6.Product>> getProductsByInventory(String? inventoryId) =>
+      (super.noSuchMethod(
+            Invocation.method(#getProductsByInventory, [inventoryId]),
+            returnValue: _i4.Future<List<_i6.Product>>.value(<_i6.Product>[]),
+          )
+          as _i4.Future<List<_i6.Product>>);
 }
