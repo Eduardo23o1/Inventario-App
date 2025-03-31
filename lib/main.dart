@@ -10,7 +10,7 @@ import 'package:inventario_app/infrastructure/repositories/inventory_repository.
 import 'package:inventario_app/infrastructure/repositories/product_repository.dart';
 import 'package:inventario_app/presentation/screens/inventory_list_screen.dart';
 //import 'package:inventario_app/presentation/screens/inventory_list_screen.dart';
-import 'package:inventario_app/presentation/screens/splash_screen.dart';
+//import 'package:inventario_app/presentation/screens/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
