@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-class Product {
+import 'package:equatable/equatable.dart';
+
+class Product extends Equatable {
   final String id;
   final String inventoryId; // Relación con el inventario
   final String name;
@@ -14,6 +16,9 @@ class Product {
     required this.quantity,
     required this.price,
   });
+
+  @override
+  List<Object> get props => [id, name, inventoryId, quantity, price];
 
   Map<String, dynamic> toJson() => {
     'id': id,

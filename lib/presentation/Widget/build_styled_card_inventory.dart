@@ -4,6 +4,7 @@ Widget buildStyledCardWithActions(
   BuildContext context,
   String name,
   int taskCount,
+  String description,
   Function() onTap,
   Function() onEdit,
   Function() onDelete,
@@ -24,7 +25,7 @@ Widget buildStyledCardWithActions(
         ),
       ),
       subtitle: Text(
-        'Productos: $taskCount',
+        'Decision: $description\nProductos: $taskCount',
         style: TextStyle(color: Colors.grey[600], fontSize: 14),
       ),
       trailing: Row(

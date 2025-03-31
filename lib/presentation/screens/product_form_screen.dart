@@ -43,60 +43,75 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildTextField(
-                _nameController,
-                'Nombre del Producto',
-                Icons.inventory,
-                (value) {
-                  if (value!.isEmpty) return 'El nombre es obligatorio';
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              _buildTextField(_priceController, 'Precio', Icons.attach_money, (
-                value,
-              ) {
-                if (value!.isEmpty) return 'El precio es obligatorio';
-                final price = double.tryParse(value);
-                if (price == null || price < 0) return 'Precio inválido';
-                return null;
-              }, TextInputType.number),
-              const SizedBox(height: 16),
-              _buildTextField(
-                _quantityController,
-                'Cantidad',
-                Icons.format_list_numbered,
-                (value) {
-                  if (value!.isEmpty) return 'La cantidad es obligatoria';
-                  final quantity = int.tryParse(value);
-                  if (quantity == null || quantity < 0)
-                    return 'Cantidad inválida';
-                  return null;
-                },
-                TextInputType.number,
-              ),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: _submitForm,
-                  icon: const Icon(Icons.save),
-                  label: Text(
-                    widget.product == null ? 'Agregar' : 'Guardar cambios',
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    textStyle: const TextStyle(fontSize: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+          child: SingleChildScrollView(
+            // Permite desplazar el formulario si es necesario
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 24),
+                _buildTextField(
+                  _nameController,
+                  'Nombre del Producto',
+                  Icons.inventory,
+                  (value) {
+                    if (value!.isEmpty) return 'El nombre es obligatorio';
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+
+                _buildTextField(
+                  _priceController,
+                  'Precio',
+                  Icons.attach_money,
+                  (value) {
+                    if (value!.isEmpty) return 'El precio es obligatorio';
+                    final price = double.tryParse(value);
+                    if (price == null || price < 0) return 'Precio inválido';
+                    return null;
+                  },
+                  TextInputType.number,
+                ),
+                const SizedBox(height: 16),
+
+                _buildTextField(
+                  _quantityController,
+                  'Cantidad',
+                  Icons.format_list_numbered,
+                  (value) {
+                    if (value!.isEmpty) return 'La cantidad es obligatoria';
+                    final quantity = int.tryParse(value);
+                    if (quantity == null || quantity < 0)
+                      return 'Cantidad inválida';
+                    return null;
+                  },
+                  TextInputType.number,
+                ),
+                const SizedBox(height: 24),
+
+                Align(
+                  alignment: Alignment.center,
+                  child: SizedBox(
+                    width: 250,
+                    child: ElevatedButton.icon(
+                      onPressed: _submitForm,
+                      icon: const Icon(Icons.save),
+                      label: Text(
+                        widget.product == null ? 'Agregar' : 'Guardar cambios',
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        textStyle: const TextStyle(fontSize: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

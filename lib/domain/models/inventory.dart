@@ -3,15 +3,24 @@ import 'dart:convert';
 class Inventory {
   final String id;
   final String name;
+  final String description;
 
-  Inventory({required this.id, required this.name});
+  Inventory({required this.id, required this.name, required this.description});
 
   // Convertir a JSON
-  Map<String, dynamic> toJson() => {'id': id, 'name': name};
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'name': name,
+    'description': description,
+  };
 
   // Crear desde JSON
   factory Inventory.fromJson(Map<String, dynamic> json) {
-    return Inventory(id: json['id'], name: json['name']);
+    return Inventory(
+      id: json['id'],
+      name: json['name'],
+      description: json['description'],
+    );
   }
 
   // Convertir lista a JSON

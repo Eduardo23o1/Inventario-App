@@ -92,6 +92,7 @@ class InventoryListScreen extends StatelessWidget {
                           )
                           .length
                       : 0,
+                  inventory.description,
                   () {
                     onInventorySelected(inventory.id, context);
                     Navigator.push(
