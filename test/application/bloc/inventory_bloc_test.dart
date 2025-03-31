@@ -6,9 +6,9 @@ import 'package:inventario_app/application/bloc/inventory_state.dart';
 import 'package:inventario_app/domain/models/inventory.dart';
 import 'package:inventario_app/infrastructure/repositories/inventory_repository.dart';
 import 'package:inventario_app/data/repositories/local_storage.dart';
-import 'package:inventario_app/di/injection.dart';
+import '../../di/injection.dart';
 import 'package:mockito/mockito.dart';
-import '../../mocks.mocks.dart'; // Asegurarse de que todos los mocks se generen en este archivo
+import '../../mocks.mocks.dart';
 
 void main() {
   late MockInventoryRepository mockRepository;

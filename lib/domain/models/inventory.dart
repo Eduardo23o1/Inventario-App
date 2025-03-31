@@ -7,14 +7,14 @@ class Inventory {
 
   Inventory({required this.id, required this.name, required this.description});
 
-  // Convertir a JSON
+  // Convierte un inventario a formato JSON.
   Map<String, dynamic> toJson() => {
     'id': id,
     'name': name,
     'description': description,
   };
 
-  // Crear desde JSON
+  // Convierte un JSON a un objeto Inventory
   factory Inventory.fromJson(Map<String, dynamic> json) {
     return Inventory(
       id: json['id'],
@@ -23,11 +23,11 @@ class Inventory {
     );
   }
 
-  // Convertir lista a JSON
+  // Convierte una lista de inventarios en un String JSON
   static String encode(List<Inventory> inventories) =>
       json.encode(inventories.map((e) => e.toJson()).toList());
 
-  // Decodificar lista desde JSON
+  // Convierte un String JSON en una lista de inventarios.
   static List<Inventory> decode(String inventories) =>
       (json.decode(inventories) as List<dynamic>)
           .map((e) => Inventory.fromJson(e))

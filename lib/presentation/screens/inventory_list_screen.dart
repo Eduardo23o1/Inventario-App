@@ -6,7 +6,6 @@ import 'package:inventario_app/application/bloc/inventory_event.dart';
 import 'package:inventario_app/application/bloc/inventory_state.dart';
 import 'package:inventario_app/application/bloc/product_bloc.dart';
 import 'package:inventario_app/application/bloc/product_event.dart';
-import 'package:inventario_app/application/bloc/product_state.dart';
 import 'package:inventario_app/data/repositories/local_storage.dart';
 import 'package:inventario_app/presentation/Widget/appbar.dart';
 import 'package:inventario_app/presentation/Widget/build_styled_card_inventory.dart';
