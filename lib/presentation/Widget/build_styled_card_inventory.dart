@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 Widget buildStyledCardWithActions(
   BuildContext context,
   String name,
-  int taskCount,
   String description,
   Function() onTap,
   Function() onEdit,
@@ -25,7 +24,7 @@ Widget buildStyledCardWithActions(
         ),
       ),
       subtitle: Text(
-        'Decision: $description\nProductos: $taskCount',
+        'Decision: $description',
         style: TextStyle(color: Colors.grey[600], fontSize: 14),
       ),
       trailing: Row(

@@ -24,4 +24,12 @@ class ProductRepository {
     final jsonString = json.encode(products.map((p) => p.toJson()).toList());
     await localStorage.setString('products', jsonString);
   }
+
+  // Nuevo método para obtener productos por inventario
+  Future<List<Product>> getProductsByInventory(String inventoryId) async {
+    final products = await loadProducts(); // Obtener todos los productos
+    return products
+        .where((product) => product.inventoryId == inventoryId)
+        .toList(); // Filtrar por inventoryId
+  }
 }

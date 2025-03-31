@@ -84,14 +84,6 @@ class InventoryListScreen extends StatelessWidget {
                 return buildStyledCardWithActions(
                   context,
                   inventory.name,
-                  context.watch<ProductBloc>().state is ProductLoaded
-                      ? (context.watch<ProductBloc>().state as ProductLoaded)
-                          .products
-                          .where(
-                            (product) => product.inventoryId == inventory.id,
-                          )
-                          .length
-                      : 0,
                   inventory.description,
                   () {
                     onInventorySelected(inventory.id, context);

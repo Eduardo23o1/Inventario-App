@@ -34,17 +34,20 @@ class LocalStorage {
     return data != null ? Inventory.decode(data) : [];
   }
 
+  // Guardar lista de productos
   Future<void> saveProducts(List<Product> products) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString(_productsKey, Product.toJsonList(products));
   }
 
+  // Cargar lista de productos
   Future<List<Product>> loadProducts() async {
     final prefs = await SharedPreferences.getInstance();
     final data = prefs.getString(_productsKey);
     return data != null ? Product.fromJsonList(data) : [];
   }
 
+  // Filtra los productos por un inventoryId específico
   Future<List<Product>> getProductsByInventory(String inventoryId) async {
     final allProducts = await loadProducts();
     return allProducts
